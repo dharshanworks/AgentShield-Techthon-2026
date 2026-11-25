@@ -1,0 +1,21 @@
+flowchart TB
+    U["User / Browser"] -->|HTTPS| FE["Render Static Site<br/>React 19 + Vite<br/>Motion + lazy Three.js authentication"]
+    FE -->|"Same-origin /api/* rewrite"| API["Render Web Service<br/>FastAPI + Uvicorn<br/>Authentication, CSRF, rate limiting, ownership"]
+    API <-->|"Users, sessions, rate limits · TLS"| DB[("Neon PostgreSQL<br/>Users, sessions, rate limits,<br/>runs, scenario results, evidence traces")]
+    subgraph CORE["AgentShield evaluation pipeline · deterministic hosted mode"]
+        direction LR
+        S1["1. Test scenarios<br/>32 synthetic banking cases"] --> S2["2. Execute baseline and candidate<br/>Capture observable traces"]
+        S2 <-->|"Simulated tool calls/results"| SIM["Synthetic banking simulator"]
+        S2 -->|"Agent claims + tool evidence"| S3["3. Independent evidence validation<br/>Claims, policies, freshness, authority"]
+        S3 --> S4["4. Compare versions<br/>New regressions and severity"]
+        S4 --> S5{"5. Release Gate<br/>Policy-based recommendation"}
+    end
+    API --> S1
+    S5 -->|Blocking policy finding| B["BLOCKED"]
+    S5 -->|No blocking policy finding| A["ALLOWED"]
+    S5 -->|"Run, evidence and verdict"| API
+    API <-->|"Persist and retrieve owner-scoped runs · TLS"| DB
+    API -->|"Results, traces and history"| FE
+    GH["GitHub repository<br/>Feature branches / PRs / main"] --> CI["GitHub Actions<br/>Pytest + Vitest / build checks"]
+    CI -. "Reviewed merge / deploy" .-> FE
+    CI -. "Reviewed merge / deploy" .-> API
