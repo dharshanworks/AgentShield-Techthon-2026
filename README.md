@@ -465,9 +465,6 @@ Future work can integrate external agents and model providers, actual CI/CD poli
 Dharshan R · Lathika Sri B · Prathisha R · Lalith Kumar J · Yuvasri M
 
 Developed as a student prototype for **Visionet Techthon 2026** to demonstrate evidence-driven change control for AI agents in the BFSI domain. This project does not imply certification or endorsement by a bank or service provider.
-
-**Repository:** [dharshanworks/AgentShield-Techthon-2026](https://github.com/dharshanworks/AgentShield-Techthon-2026) (private; access required)
-
 ---
 
 <div align="center">
